@@ -2,119 +2,102 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* 
+ * CertuChain Apple Design System
+ * Cupertino Human Interface Guidelines (HIG) & Liquid Glass
+ * System type stack, semantic system colors, and physics-driven springs
+ */
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    --background: 210 20% 98%;
+    --foreground: 220 20% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 220 20% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 220 20% 12%;
 
-    --primary: 221 83% 53%;
+    /* Apple System Blue */
+    --primary: 211 100% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    /* Cupertino Neutral Secondary */
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 220 20% 12%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 210 16% 94%;
+    --muted-foreground: 220 10% 46%;
 
-    --accent: 43 96% 56%;
-    --accent-foreground: 222 47% 11%;
+    /* Apple Gold Accent for Diplomas */
+    --accent: 38 92% 50%;
+    --accent-foreground: 220 20% 12%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 211 100% 50%;
 
-    --success: 142 76% 36%;
+    /* Apple System Green for Verified Status */
+    --success: 142 70% 42%;
     --success-foreground: 0 0% 100%;
 
-    --verified: 142 76% 36%;
+    --verified: 142 70% 42%;
     --verified-foreground: 0 0% 100%;
 
-    --blockchain: 221 83% 53%;
-    --blockchain-light: 221 83% 65%;
+    /* Ethereum Tech Accent */
+    --blockchain: 211 100% 50%;
+    --blockchain-light: 217 91% 60%;
 
-    --certificate-gold: 43 96% 56%;
-    --certificate-border: 43 74% 66%;
+    --certificate-gold: 38 92% 50%;
+    --certificate-border: 38 70% 60%;
 
-    --radius: 0.75rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 1rem;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    --background: 224 25% 6%;
+    --foreground: 210 20% 98%;
 
-    --card: 222 47% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 224 25% 9%;
+    --card-foreground: 210 20% 98%;
 
-    --popover: 222 47% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 224 25% 9%;
+    --popover-foreground: 210 20% 98%;
 
-    --primary: 221 83% 53%;
+    --primary: 211 100% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 33% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 224 20% 14%;
+    --secondary-foreground: 210 20% 98%;
 
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 224 20% 14%;
+    --muted-foreground: 220 15% 65%;
 
-    --accent: 43 96% 56%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 38 92% 54%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 210 20% 98%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 221 83% 53%;
+    --border: 224 20% 18%;
+    --input: 224 20% 18%;
+    --ring: 211 100% 55%;
 
-    --success: 142 76% 36%;
+    --success: 142 70% 46%;
     --success-foreground: 0 0% 100%;
 
-    --verified: 142 76% 45%;
+    --verified: 142 70% 46%;
     --verified-foreground: 0 0% 100%;
 
-    --blockchain: 221 83% 60%;
-    --blockchain-light: 221 83% 70%;
+    --blockchain: 211 100% 60%;
+    --blockchain-light: 217 91% 70%;
 
-    --certificate-gold: 43 96% 56%;
-    --certificate-border: 43 74% 66%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --certificate-gold: 38 92% 54%;
+    --certificate-border: 38 70% 60%;
   }
 }
 
@@ -123,41 +106,145 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.011em;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold;
+    letter-spacing: -0.025em;
   }
 }
 
 @layer utilities {
-  .gradient-primary {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--blockchain-light)) 100%);
+  /* Apple Liquid Glass chrome materials */
+  .apple-glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.04);
   }
 
-  .gradient-accent {
-    background: linear-gradient(135deg, hsl(var(--certificate-gold)) 0%, hsl(var(--certificate-border)) 100%);
+  .dark .apple-glass {
+    background: rgba(18, 20, 26, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
   }
 
-  .gradient-verified {
-    background: linear-gradient(135deg, hsl(var(--verified)) 0%, hsl(142 76% 45%) 100%);
+  .apple-glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .shadow-glow-primary {
-    box-shadow: 0 10px 40px -10px hsl(var(--primary) / 0.3);
+  .dark .apple-glass-card {
+    background: rgba(23, 27, 36, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.4);
   }
 
-  .shadow-glow-accent {
-    box-shadow: 0 10px 40px -10px hsl(var(--certificate-gold) / 0.25);
+  .apple-glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
   }
 
-  .blockchain-pattern {
+  .dark .apple-glass-card:hover {
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Apple-style fluid spring physics */
+  .apple-spring {
+    transition: all 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .apple-spring-fast {
+    transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Apple button specular press effect */
+  .apple-button {
+    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 160ms ease, opacity 160ms ease;
+  }
+  .apple-button:active {
+    transform: scale(0.97);
+  }
+
+  /* Physical Holographic Foil Shimmer */
+  .holographic-foil {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 200, 100, 0.6) 20%,
+      rgba(100, 220, 255, 0.6) 40%,
+      rgba(200, 140, 255, 0.6) 60%,
+      rgba(130, 255, 170, 0.6) 80%,
+      rgba(255, 255, 255, 0.4) 100%
+    );
+    background-size: 200% 200%;
+    animation: hologramShift 6s ease infinite;
+  }
+
+  @keyframes hologramShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Certificate security guilloche background */
+  .certificate-guilloche {
+    background-color: #faf9f6;
     background-image: 
-      linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px);
-    background-size: 40px 40px;
+      radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.04) 0%, transparent 60%),
+      repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 4px, rgba(180, 140, 40, 0.03) 5px, transparent 6px);
+  }
+
+  .dark .certificate-guilloche {
+    background-color: #12141a;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.06) 0%, transparent 60%),
+      repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 4px, rgba(212, 175, 55, 0.04) 5px, transparent 6px);
+  }
+
+  /* Laser verification scan beam */
+  .laser-scan-line {
+    background: linear-gradient(90deg, transparent 0%, #34c759 50%, transparent 100%);
+    box-shadow: 0 0 15px #34c759;
+    animation: scanMove 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes scanMove {
+    0% { top: 0%; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  /* Apple Subtle Gradients */
+  .gradient-apple-blue {
+    background: linear-gradient(135deg, #0071e3 0%, #47a3ff 100%);
+  }
+
+  .gradient-apple-dark {
+    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%);
+  }
+
+  .gradient-accent-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa7c11 100%);
   }
 }
