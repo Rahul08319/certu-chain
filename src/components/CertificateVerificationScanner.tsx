@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { CertificateData } from "./CertificateDisplay";
 import { getCurrentYear } from "@/lib/date-utils";
+import { soundEffects } from "@/lib/haptics-audio";
 
 interface CertificateVerificationScannerProps {
   onCertificateVerified: (cert: CertificateData) => void;
@@ -69,6 +70,7 @@ export const CertificateVerificationScanner: React.FC<CertificateVerificationSca
   ];
 
   const runVerification = (cert: CertificateData) => {
+    soundEffects.playClick();
     setIsVerifying(true);
     setVerifyStage("Connecting to Ethereum Mainnet RPC...");
 
@@ -84,6 +86,7 @@ export const CertificateVerificationScanner: React.FC<CertificateVerificationSca
       setIsVerifying(false);
       setVerifyStage("");
       onCertificateVerified(cert);
+      soundEffects.playSuccessChime();
       toast({
         title: "Certificate Verified on Blockchain",
         description: `${cert.studentName}'s credential is valid and tamper-proof.`,
@@ -92,6 +95,7 @@ export const CertificateVerificationScanner: React.FC<CertificateVerificationSca
   };
 
   const handleManualVerify = () => {
+    soundEffects.playClick();
     const trimmed = query.trim();
     if (!trimmed) {
       toast({

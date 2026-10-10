@@ -1,6 +1,7 @@
 # CertuChain 🛡️📜
 ### Apple-Grade Blockchain Academic Credential Verification Protocol
 
+[![Build & Verification](https://github.com/Rahul08319/certu-chain/actions/workflows/ci.yml/badge.svg)](https://github.com/Rahul08319/certu-chain/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Ethereum Mainnet](https://img.shields.io/badge/Blockchain-Ethereum%20Mainnet-627EEA?style=flat-square&logo=ethereum&logoColor=white)](https://ethereum.org)
 [![ERC-5192 Soulbound](https://img.shields.io/badge/Standard-ERC--5192%20Soulbound-emerald?style=flat-square)](https://eips.ethereum.org/EIPS/eip-5192)
@@ -33,6 +34,7 @@ CertuChain adheres to Apple's Human Interface Guidelines (HIG) and the **Liquid 
 | **Depth** | Multi-plane z-index hierarchy and realistic physical paper parchment diploma canvas with Guilloche security engraving. |
 | **Fluid Motion** | Spring physics (`cubic-bezier(0.16, 1, 0.3, 1)`) for micro-interactions, modal transitions, and responsive hover states. |
 | **3D Hologram Seal** | Interactive metallic foil hologram badge that responds dynamically to pointer coordinates using CSS 3D perspective (`preserve-3d`). |
+| **Acoustic Feedback** | Synthesized Cupertino sound feedback using native Web Audio API (`src/lib/haptics-audio.ts`) for tactile clicks and verification chimes. |
 
 ---
 
@@ -69,13 +71,16 @@ Credentials cannot be transferred, sold, or borrowed. Once minted to a recipient
 ### 2. 🪞 Interactive 3D Holographic Security Foil
 The certificate display features a physical-digital security foil emblem that calculates mouse position in real-time, producing an authentic iridescent metallic reflection.
 
-### 3. 🌳 Merkle Patricia Trie Batch Verification
+### 3. 🛡️ Zero-Knowledge (zk-SNARK) Privacy Mode
+Toggle between full diploma presentation and selective disclosure mode. In zk-mode, private student IDs and exact GPA values are shielded behind zero-knowledge cryptographic commitments (`GPA ≥ 3.80`), guaranteeing privacy for job applications.
+
+### 4. 🏢 Enterprise Batch Verifier
+Universities, accreditation bodies, and recruiting platforms can verify batches of student hashes in parallel with sub-second latency and export audit results directly to CSV.
+
+### 5. 🌳 Merkle Patricia Trie Batch Verification
 Academic institutions can anchor entire graduating cohorts (10,000+ students) in a single Ethereum transaction using Merkle trees, slashing gas expenditure by **99.4%**.
 
-### 4. ⚡ Sub-Second Verification Engine
-Includes an interactive verification scanner with pre-anchored academic samples (MIT, Stanford, Oxford) and instant validation against simulated Ethereum RPC endpoints.
-
-### 5. 🛠️ Interactive Issuer Sandbox
+### 6. 🛠️ Interactive Issuer Sandbox
 Visitors can test issuing their own blockchain credential with dynamic degree names, honors, and instant block confirmation.
 
 ---
@@ -102,7 +107,7 @@ export const getDynamicCopyrightRange = (startYear = 2024): string => {
 
 ## 🧠 TypeSafe AI System One Integration Analysis
 
-As part of the architecture evaluation using the **TypeSafe AI** skill:
+Executable implementation included in [`src/lib/typesafe-core.ts`](file:///c:/Users/Rahul%20Kumar/Downloads/Github/certu-chain/src/lib/typesafe-core.ts):
 
 ### 1. Choice Primitive for Tool Categorization vs Compaction Accuracy
 * **Finding:** Adding a `Choice` primitive for tool categorization significantly improves conversational context compaction accuracy over generic free-form LLM summarization.
@@ -158,7 +163,8 @@ Creates an optimized, tree-shaken static bundle in the `dist/` directory.
 - **Styling:** Tailwind CSS + Radix UI Primitives (`@radix-ui/react-*`)
 - **Icons:** Lucide React
 - **Web3 Compatibility:** EIP-712, ERC-5192 (Soulbound), IPFS CIDv1
-- **Animations:** CSS 3D Transforms, Tailwind Animate, Apple Spring Physics
+- **Audio Engine:** Native Web Audio API Acoustic Feedback
+- **CI/CD:** GitHub Actions Automated Workflow
 
 ---
 
@@ -166,5 +172,5 @@ Creates an optimized, tree-shaken static bundle in the `dist/` directory.
 
 Distributed under the **MIT License**.
 
-Crafted by **[Rahul Kumar](https://github.com/Rahul08319)**.
+Crafted with excellence by **[Rahul Kumar](https://github.com/Rahul08319)**.
 Designed with Apple Human Interface Guidelines and Web3 Ethereum consensus standards.

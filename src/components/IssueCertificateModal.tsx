@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { CertificateData } from "./CertificateDisplay";
 import { getCurrentYear } from "@/lib/date-utils";
+import { soundEffects } from "@/lib/haptics-audio";
 
 interface IssueCertificateModalProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export const IssueCertificateModal: React.FC<IssueCertificateModalProps> = ({
 
   const handleMint = (e: React.FormEvent) => {
     e.preventDefault();
+    soundEffects.playClick();
     if (!studentName.trim() || !degree.trim() || !institution.trim()) {
       toast({
         title: "Required Fields Missing",
@@ -76,6 +78,7 @@ export const IssueCertificateModal: React.FC<IssueCertificateModalProps> = ({
       onCertificateIssued(newCert);
       onClose();
 
+      soundEffects.playMintChime();
       toast({
         title: "Certificate Minted Successfully!",
         description: `Issued to ${newCert.studentName} with ID: ${newCert.id}`,
@@ -98,7 +101,10 @@ export const IssueCertificateModal: React.FC<IssueCertificateModalProps> = ({
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={() => {
+              soundEffects.playClick();
+              onClose();
+            }}
             disabled={isMinting}
             className="w-8 h-8 rounded-full bg-secondary hover:bg-secondary/80 flex items-center justify-center text-muted-foreground hover:text-foreground"
           >
@@ -195,7 +201,10 @@ export const IssueCertificateModal: React.FC<IssueCertificateModalProps> = ({
             <Button
               type="button"
               variant="ghost"
-              onClick={onClose}
+              onClick={() => {
+                soundEffects.playClick();
+                onClose();
+              }}
               disabled={isMinting}
               className="rounded-xl text-xs h-10 px-4"
             >

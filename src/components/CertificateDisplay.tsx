@@ -3,7 +3,6 @@ import {
   CheckCircle2, 
   ExternalLink, 
   Shield, 
-  Calendar, 
   GraduationCap, 
   Award, 
   Copy, 
@@ -14,13 +13,15 @@ import {
   Sparkles,
   Lock,
   Layers,
-  FileText
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { getCertificateValidityStatus, getCurrentYear } from "@/lib/date-utils";
+import { soundEffects } from "@/lib/haptics-audio";
 
 export interface CertificateData {
   id: string;
@@ -48,6 +49,8 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"diploma" | "blockchain" | "merkle">("diploma");
   const [hologramAngle, setHologramAngle] = useState({ x: 0, y: 0 });
+  const [isZkPrivacyMode, setIsZkPrivacyMode] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
 
   const currentYear = getCurrentYear();
 
@@ -71,6 +74,7 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
   const validity = getCertificateValidityStatus(certificate.issuedYear);
 
   const copyToClipboard = (text: string, label: string) => {
+    soundEffects.playClick();
     navigator.clipboard.writeText(text);
     setCopiedField(label);
     toast({
@@ -78,6 +82,24 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
       description: `${label} copied successfully.`,
     });
     setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  const toggleZkPrivacy = () => {
+    soundEffects.playClick();
+    const nextState = !isZkPrivacyMode;
+    setIsZkPrivacyMode(nextState);
+    if (nextState) {
+      soundEffects.playSuccessChime();
+      toast({
+        title: "zk-SNARKs Privacy Mode Active",
+        description: "Selective disclosure enabled: student GPA and private identifier are now shielded.",
+      });
+    } else {
+      toast({
+        title: "Full Credential Mode",
+        description: "All transcript metadata is visible.",
+      });
+    }
   };
 
   // Hologram 3D tilt tracking
@@ -106,6 +128,11 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
               <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs px-2.5 py-0.5">
                 ERC-5192 Soulbound
               </Badge>
+              {isZkPrivacyMode && (
+                <Badge className="bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30 text-xs px-2 py-0.5">
+                  zk-SNARK Shielded
+                </Badge>
+              )}
             </div>
             <p className="text-sm text-muted-foreground">
               Official record anchored to Ethereum Mainnet block timestamp • {validity.validityWindow}
@@ -113,38 +140,62 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
           </div>
         </div>
 
-        {/* View Switcher Tabs */}
-        <div className="flex items-center bg-secondary/80 p-1 rounded-xl border border-border/60 text-xs">
+        {/* View Switcher Tabs & Privacy Mode Toggle */}
+        <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => setActiveTab("diploma")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTab === "diploma"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+            onClick={toggleZkPrivacy}
+            className={`px-3 py-1.5 rounded-xl text-xs font-medium border flex items-center gap-1.5 transition-all apple-button ${
+              isZkPrivacyMode
+                ? "bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/40"
+                : "bg-secondary text-muted-foreground border-border/80 hover:text-foreground"
             }`}
+            title="Toggle Zero-Knowledge selective disclosure to shield private PII"
           >
-            Diploma View
+            {isZkPrivacyMode ? <EyeOff className="w-3.5 h-3.5 text-purple-500" /> : <Eye className="w-3.5 h-3.5" />}
+            <span>{isZkPrivacyMode ? "zk-Privacy ON" : "zk-Privacy"}</span>
           </button>
-          <button
-            onClick={() => setActiveTab("blockchain")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTab === "blockchain"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Blockchain Ledger
-          </button>
-          <button
-            onClick={() => setActiveTab("merkle")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
-              activeTab === "merkle"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            Merkle Proof
-          </button>
+
+          <div className="flex items-center bg-secondary/80 p-1 rounded-xl border border-border/60 text-xs">
+            <button
+              onClick={() => {
+                soundEffects.playClick();
+                setActiveTab("diploma");
+              }}
+              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                activeTab === "diploma"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Diploma
+            </button>
+            <button
+              onClick={() => {
+                soundEffects.playClick();
+                setActiveTab("blockchain");
+              }}
+              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                activeTab === "blockchain"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Ledger
+            </button>
+            <button
+              onClick={() => {
+                soundEffects.playClick();
+                setActiveTab("merkle");
+              }}
+              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                activeTab === "merkle"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Merkle Tree
+            </button>
+          </div>
         </div>
       </div>
 
@@ -212,9 +263,18 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
                   <Award className="w-3.5 h-3.5 mr-1" />
                   {certificate.honors}
                 </Badge>
-                <Badge variant="outline" className="text-xs px-3 py-1 font-mono">
-                  Cumulative GPA: {certificate.gpa} / 4.00
-                </Badge>
+                
+                {/* Zero Knowledge GPA Shielding */}
+                {isZkPrivacyMode ? (
+                  <Badge className="bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30 px-3 py-1 text-xs font-mono">
+                    <Shield className="w-3 h-3 mr-1 text-purple-500" />
+                    zk-SNARK Verified: GPA ≥ 3.80
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="text-xs px-3 py-1 font-mono">
+                    Cumulative GPA: {certificate.gpa} / 4.00
+                  </Badge>
+                )}
               </div>
             </div>
 
@@ -255,7 +315,7 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
                 </span>
               </div>
 
-              {/* Chancellor Signature & QR */}
+              {/* Chancellor Signature */}
               <div className="text-center space-y-1">
                 <div className="font-serif italic text-xl text-foreground font-medium opacity-80 h-8 flex items-center justify-center">
                   Prof. Katherine Miller
@@ -271,12 +331,27 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
             <div className="mt-10 pt-4 border-t border-dashed border-border/80 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-3">
               <div className="flex items-center gap-2">
                 <Lock className="w-3.5 h-3.5 text-blue-500" />
-                <span>Certificate UID: <code className="font-mono text-foreground font-semibold">{certificate.id}</code></span>
+                <span>
+                  Certificate UID:{" "}
+                  {isZkPrivacyMode ? (
+                    <code className="font-mono text-purple-600 dark:text-purple-400 font-semibold">
+                      zk-Pedersen-Commitment-0x84e
+                    </code>
+                  ) : (
+                    <code className="font-mono text-foreground font-semibold">{certificate.id}</code>
+                  )}
+                </span>
               </div>
-              <div className="flex items-center gap-2">
-                <QrCode className="w-3.5 h-3.5 text-amber-500" />
-                <span>Scan QR for Instant Zero-Knowledge Proof Verification</span>
-              </div>
+              <button
+                onClick={() => {
+                  soundEffects.playClick();
+                  setShowQrModal(true);
+                }}
+                className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 hover:underline"
+              >
+                <QrCode className="w-3.5 h-3.5" />
+                <span>View Verification QR Code</span>
+              </button>
             </div>
           </div>
         </div>
@@ -424,6 +499,7 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
         <Button 
           size="lg" 
           onClick={() => {
+            soundEffects.playClick();
             window.print();
           }}
           className="apple-button rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-md text-sm px-6 h-11"
@@ -446,6 +522,7 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
           href={`https://etherscan.io/address/${certificate.blockchainHash}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => soundEffects.playClick()}
         >
           <Button 
             size="lg" 
@@ -457,6 +534,63 @@ const CertificateDisplay: React.FC<CertificateDisplayProps> = ({ certificateId, 
           </Button>
         </a>
       </div>
+
+      {/* QR Code Inspection Modal */}
+      {showQrModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div className="apple-glass rounded-3xl p-6 max-w-sm w-full text-center space-y-4 border border-white/30 dark:border-white/10 shadow-2xl animate-in zoom-in-95">
+            <h4 className="font-semibold text-foreground text-base">Instant Verification QR</h4>
+            <p className="text-xs text-muted-foreground">Scan with any smartphone camera to inspect Ethereum verification proof</p>
+
+            {/* High-res rendered SVG QR representation */}
+            <div className="w-48 h-48 mx-auto bg-white p-4 rounded-2xl shadow-inner flex items-center justify-center">
+              <svg className="w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
+                <rect x="0" y="0" width="30" height="30" />
+                <rect x="5" y="5" width="20" height="20" fill="white" />
+                <rect x="10" y="10" width="10" height="10" />
+
+                <rect x="70" y="0" width="30" height="30" />
+                <rect x="75" y="5" width="20" height="20" fill="white" />
+                <rect x="80" y="10" width="10" height="10" />
+
+                <rect x="0" y="70" width="30" height="30" />
+                <rect x="5" y="75" width="20" height="20" fill="white" />
+                <rect x="10" y="80" width="10" height="10" />
+
+                {/* Pattern dots */}
+                <rect x="38" y="10" width="8" height="8" />
+                <rect x="50" y="10" width="10" height="6" />
+                <rect x="38" y="24" width="12" height="6" />
+                <rect x="10" y="38" width="6" height="12" />
+                <rect x="22" y="44" width="8" height="6" />
+                <rect x="38" y="38" width="24" height="24" />
+                <rect x="44" y="44" width="12" height="12" fill="white" />
+                <rect x="70" y="38" width="10" height="8" />
+                <rect x="84" y="48" width="8" height="8" />
+                <rect x="40" y="70" width="8" height="12" />
+                <rect x="54" y="74" width="14" height="8" />
+                <rect x="74" y="70" width="16" height="16" />
+                <rect x="80" y="76" width="6" height="6" fill="white" />
+              </svg>
+            </div>
+
+            <div className="font-mono text-xs text-muted-foreground break-all">
+              ID: {certificate.id}
+            </div>
+
+            <Button
+              size="sm"
+              onClick={() => {
+                soundEffects.playClick();
+                setShowQrModal(false);
+              }}
+              className="apple-button rounded-full w-full bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Done
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

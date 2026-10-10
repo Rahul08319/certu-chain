@@ -1,7 +1,6 @@
 import React, { useState, useRef } from "react";
-import { ShieldCheck, Sparkles, CheckCircle2, ArrowRight, BookOpen, Lock, Terminal } from "lucide-react";
+import { ShieldCheck, Sparkles, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { AppleNavbar } from "@/components/AppleNavbar";
 import { AppleFooter } from "@/components/AppleFooter";
 import { LiveNetworkStats } from "@/components/LiveNetworkStats";
@@ -9,12 +8,15 @@ import { BentoGridFeatures } from "@/components/BentoGridFeatures";
 import CertificateDisplay, { CertificateData } from "@/components/CertificateDisplay";
 import { CertificateVerificationScanner } from "@/components/CertificateVerificationScanner";
 import { IssueCertificateModal } from "@/components/IssueCertificateModal";
+import { BatchVerificationModal } from "@/components/BatchVerificationModal";
 import { getCurrentYear } from "@/lib/date-utils";
+import { soundEffects } from "@/lib/haptics-audio";
 
 const Index: React.FC = () => {
   const currentYear = getCurrentYear();
   const [activeCertificate, setActiveCertificate] = useState<CertificateData | null>(null);
   const [isIssueModalOpen, setIsIssueModalOpen] = useState(false);
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const verifySectionRef = useRef<HTMLDivElement>(null);
 
   const scrollToVerify = () => {
@@ -37,6 +39,7 @@ const Index: React.FC = () => {
       {/* Cupertino Frosted Glass Navbar */}
       <AppleNavbar
         onIssueClick={() => setIsIssueModalOpen(true)}
+        onBatchClick={() => setIsBatchModalOpen(true)}
         onVerifyScroll={scrollToVerify}
       />
 
@@ -99,7 +102,10 @@ const Index: React.FC = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setActiveCertificate(null)}
+                    onClick={() => {
+                      soundEffects.playClick();
+                      setActiveCertificate(null);
+                    }}
                     className="text-xs text-muted-foreground hover:text-foreground"
                   >
                     Reset View
@@ -121,7 +127,7 @@ const Index: React.FC = () => {
                     Inspect a Live Verified Credential
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                    Try tilting the diploma with your mouse to inspect the optical 3D hologram foil seal.
+                    Try tilting the diploma with your mouse to inspect the optical 3D hologram foil seal, or toggle zk-Privacy mode.
                   </p>
                 </div>
                 <CertificateDisplay
@@ -207,25 +213,27 @@ const Index: React.FC = () => {
             <div className="flex flex-wrap items-center justify-center gap-3 relative z-10 pt-2">
               <Button
                 size="lg"
-                onClick={() => setIsIssueModalOpen(true)}
+                onClick={() => {
+                  soundEffects.playClick();
+                  setIsIssueModalOpen(true);
+                }}
                 className="apple-button h-12 px-8 rounded-full bg-white text-blue-600 hover:bg-white/90 font-medium text-sm shadow-lg"
               >
                 <Sparkles className="w-4 h-4 mr-2 text-blue-600" />
                 Issue a Test Certificate
               </Button>
-              <a
-                href="https://github.com/Rahul08319/certu-chain"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => {
+                  soundEffects.playClick();
+                  setIsBatchModalOpen(true);
+                }}
+                className="apple-button h-12 px-6 rounded-full border-white/30 text-white bg-white/10 hover:bg-white/20 text-sm"
               >
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="apple-button h-12 px-6 rounded-full border-white/30 text-white bg-white/10 hover:bg-white/20 text-sm"
-                >
-                  View GitHub Source
-                </Button>
-              </a>
+                <Layers className="w-4 h-4 mr-2" />
+                Batch Verifier
+              </Button>
             </div>
           </div>
         </section>
@@ -247,6 +255,12 @@ const Index: React.FC = () => {
             }
           }, 150);
         }}
+      />
+
+      {/* Enterprise Batch Verifier Modal */}
+      <BatchVerificationModal
+        isOpen={isBatchModalOpen}
+        onClose={() => setIsBatchModalOpen(false)}
       />
     </div>
   );

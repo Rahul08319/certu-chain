@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { ShieldCheck, Sparkles, Moon, Sun, Github, Cpu, CheckCircle } from "lucide-react";
+import { ShieldCheck, Sparkles, Moon, Sun, Github, Cpu, CheckCircle, Volume2, VolumeX, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { soundEffects } from "@/lib/haptics-audio";
 
 interface AppleNavbarProps {
   onIssueClick: () => void;
+  onBatchClick: () => void;
   onVerifyScroll: () => void;
 }
 
-export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onVerifyScroll }) => {
+export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onBatchClick, onVerifyScroll }) => {
   const [isDark, setIsDark] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [blockHeight, setBlockHeight] = useState(21489240);
 
   useEffect(() => {
@@ -26,6 +29,7 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onVerify
   }, []);
 
   const toggleTheme = () => {
+    soundEffects.playClick();
     if (isDark) {
       document.documentElement.classList.remove("dark");
       setIsDark(false);
@@ -35,11 +39,25 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onVerify
     }
   };
 
+  const toggleSound = () => {
+    const muted = soundEffects.toggleMute();
+    setIsMuted(muted);
+    if (!muted) {
+      soundEffects.playSuccessChime();
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full apple-glass transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <div 
+          className="flex items-center gap-3 cursor-pointer" 
+          onClick={() => {
+            soundEffects.playClick();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
           <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-400 p-[1.5px] shadow-sm">
             <div className="w-full h-full bg-white dark:bg-[#151922] rounded-[14px] flex items-center justify-center">
               <ShieldCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -59,7 +77,7 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onVerify
         </div>
 
         {/* Live Block Pill (Apple-style status capsule) */}
-        <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/80 border border-border/60 text-xs text-muted-foreground">
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/80 border border-border/60 text-xs text-muted-foreground">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -73,24 +91,54 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onVerify
         </div>
 
         {/* Nav actions */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
-            onClick={onVerifyScroll}
+            onClick={() => {
+              soundEffects.playClick();
+              onVerifyScroll();
+            }}
             className="text-xs font-medium text-muted-foreground hover:text-foreground hidden sm:inline-flex"
           >
-            Verify Credential
+            Verify
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              soundEffects.playClick();
+              onBatchClick();
+            }}
+            className="text-xs font-medium text-muted-foreground hover:text-foreground hidden md:inline-flex"
+          >
+            <Layers className="w-3.5 h-3.5 mr-1 text-indigo-500" />
+            Batch Verifier
           </Button>
 
           <Button
             variant="outline"
             size="sm"
-            onClick={onIssueClick}
+            onClick={() => {
+              soundEffects.playClick();
+              onIssueClick();
+            }}
             className="text-xs font-medium apple-button rounded-full border-blue-500/30 text-blue-600 dark:text-blue-400 hover:bg-blue-500/10"
           >
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
             Issue Demo
+          </Button>
+
+          {/* Sound Mute/Unmute */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSound}
+            className="w-9 h-9 rounded-full text-muted-foreground hover:text-foreground"
+            title={isMuted ? "Unmute acoustic feedback" : "Mute acoustic feedback"}
+          >
+            {isMuted ? <VolumeX className="w-4 h-4 text-muted-foreground" /> : <Volume2 className="w-4 h-4 text-blue-500" />}
           </Button>
 
           {/* Theme Toggle Button */}
@@ -109,6 +157,7 @@ export const AppleNavbar: React.FC<AppleNavbarProps> = ({ onIssueClick, onVerify
             href="https://github.com/Rahul08319/certu-chain"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => soundEffects.playClick()}
             className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-secondary text-foreground hover:bg-secondary/80 apple-button"
             title="View on GitHub"
           >
